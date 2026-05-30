@@ -54,6 +54,8 @@
       text-align: center;
       padding: 2rem;
       transition: opacity 0.8s ease, transform 0.8s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #lock-screen.fade-out {
@@ -500,7 +502,7 @@
   <section id="reveal">
     <canvas class="confetti-burst" id="confetti"></canvas>
     <div class="fade-up">
-      <p class="reveal-date">31 · May · 2005 &nbsp;→&nbsp; 31 · May · 2025</p>
+      <p class="reveal-date">31 · May · 2005 &nbsp;→&nbsp; 31 · May · 2026</p>
     </div>
     <div class="fade-up" style="transition-delay:0.15s">
       <div class="reveal-name">Amatullah</div>
@@ -509,7 +511,7 @@
       <p class="reveal-title">Happy Birthday, my love 🌹</p>
     </div>
     <div class="fade-up" style="transition-delay:0.45s">
-      <div class="reveal-age">Turning 20 &nbsp;✦&nbsp; Still my favourite person</div>
+      <div class="reveal-age">Turning 21 &nbsp;✦&nbsp; Still my favourite person</div>
     </div>
   </section>
 
@@ -725,10 +727,10 @@
     const hint = document.getElementById('tap-hint');
 
     const stages = [
-      "Hello. there... excuse. me 👀",
-      "Wait... I. know. that. face...",
-      "Those. eyes... that. smile...",
-      "Oh. my. God. - Kaleju?! Is. that. YOU?! 🌹",
+      "Hello there... excuse me 👀",
+      "Wait... I know that face...",
+      "Those eyes... that smile...",
+      "Oh my God — Kaleju?! Is that YOU?! 🌹",
     ];
 
     let stage = 0;
@@ -738,11 +740,14 @@
       textEl.innerHTML = '';
       const words = s.split(' ');
       words.forEach((w, i) => {
+        if (i > 0) {
+          textEl.appendChild(document.createTextNode(' '));
+        }
         const span = document.createElement('span');
         span.className = 'word';
-        span.textContent = (i > 0 ? ' ' : '') + w;
+        span.textContent = w;
         textEl.appendChild(span);
-        setTimeout(() => span.classList.add('visible'), i * 80);
+        setTimeout(() => span.classList.add('visible'), i * 100);
       });
     }
 
@@ -775,8 +780,9 @@
   function triggerRevealBurst() {
     const canvas = document.getElementById('confetti');
     const ctx = canvas.getContext('2d');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width || window.innerWidth;
+    canvas.height = rect.height || window.innerHeight;
 
     const colors = ['#c4637a','#e8a0ae','#c9a84c','#e8d5a3','#f5d6db','#8b2a3e'];
     const pieces = [];
